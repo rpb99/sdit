@@ -32,7 +32,6 @@ db
         password: "test123",
       });
     return user;
-  })
-  .then((user) => console.log(user));
+  });
 
 module.exports = app;
