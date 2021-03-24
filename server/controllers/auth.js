@@ -29,6 +29,10 @@ module.exports = {
 
     sendTokenRes(user, 200, res);
   },
+  async profile(req, res) {
+    const user = await User.findOne({ where: { id: req.user.id } });
+    res.json(user);
+  },
 };
 
 const sendTokenRes = (user, statusCode, res) => {

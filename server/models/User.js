@@ -26,7 +26,7 @@ User.beforeCreate(encryptPassword);
 User.beforeUpdate(encryptPassword);
 
 User.prototype.generateAccessToken = function () {
-  return jwt.sign({ id: this.id }, process.env.TOKEN_SECRET, {
+  return jwt.sign({ id: this.id }, process.env.JWT_SECRET, {
     expiresIn: "1h",
   });
 };
