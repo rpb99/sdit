@@ -4,11 +4,15 @@ const jwt = require("jsonwebtoken");
 module.exports = {
   async protect(req, res, next) {
     let token;
-    console.log(req.headers);
 
     if (req.headers.authorization?.startsWith("Bearer")) {
       token = req.headers.authorization.split(" ")[1];
     }
+    // Production
+
+    // else if (req.cookies.token) {
+    //   token = req.cookies.token;
+    // }
 
     if (!token)
       res

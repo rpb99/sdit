@@ -29,8 +29,16 @@ module.exports = {
 
     sendTokenRes(user, 200, res);
   },
+  async logout(req, res) {
+    res.cookie("token", "none", {
+      expires: new Date(Date.now() + 10 * 1000),
+      httpOnly: true,
+    });
+    res.json({ success: true, data: {} });
+  },
   async profile(req, res) {
     const user = await User.findOne({ where: { id: req.user.id } });
+    console.log(req.cookies);
     res.json(user);
   },
 };
