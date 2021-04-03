@@ -18,7 +18,6 @@ module.exports = {
       res.status(401).json({ success: false, msg: "Invalid credentials" });
 
     // Check password matches
-    // const isMatch = await argon2.verify(user.password, password);
     const isMatch = await user.isMatch(password);
 
     if (!isMatch)
@@ -29,16 +28,29 @@ module.exports = {
 
     sendTokenRes(user, 200, res);
   },
+  async register(req, res) {
+    const { username, email, password } = req.body;
+
+    const user = await User.create({
+      username,
+      email,
+      password,
+    });
+
+    sendTokenRes(user, 200, res);
+  },
   async logout(req, res) {
     res.cookie("token", "none", {
-      expires: new Date(Date.now() + 10 * 1000),
+      expires: new Date(new Date().getTime() + 3 * 1000),
       httpOnly: true,
     });
     res.json({ success: true, data: {} });
   },
-  async profile(req, res) {
-    const user = await User.findOne({ where: { id: req.user.id } });
-    console.log(req.cookies);
+  async currentUser(req, res) {
+    const user = await User.findOne({
+      attributes: ["username", "email"],
+      where: { id: req.user.id },
+    });
     res.json(user);
   },
 };
@@ -46,6 +58,8 @@ module.exports = {
 const sendTokenRes = (user, statusCode, res) => {
   const token = user.generateAccessToken();
   const options = {
+    sameSite: "strict",
+    path: "/",
     expires: new Date(
       Date.now() + process.env.JWT_COOKIE_EXPIRE * 24 * 60 * 60 * 1000
     ),
