@@ -1,20 +1,33 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import Cookies from "js-cookie";
 
 import Input from "../../components/Form/Input";
 
-import { createUser } from "../../api/auth";
+import { createUser, currentUser } from "../../api/auth";
 
-const Register = () => {
+const Register = ({ history }) => {
+  const dispatch = useDispatch();
+  const { user } = useSelector((state) => ({ ...state }));
   const [registerForm, setRegisterForm] = useState({});
+
+  useEffect(() => {
+    user && history.push("/");
+  }, [user]);
 
   const onSubmit = (e) => {
     e.preventDefault();
-    createUser(registerForm).then(
-      ({ data }) =>
-        data.token &&
-        Cookies.set("isLoggedIn", true, { expires: 30, path: "/" })
-    );
+    createUser(registerForm).then(({ data }) => {
+      if (data.token) {
+        Cookies.set("isLoggedIn", true, { expires: 30, path: "/" });
+        currentUser().then(({ data }) =>
+          dispatch({
+            type: "LOGGED_IN_USER",
+            payload: data,
+          })
+        );
+      }
+    });
   };
 
   const handleChange = (e) => {

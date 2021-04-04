@@ -18,11 +18,9 @@ const Header = () => {
       dispatch({ type: "LOGOUT", payload: null });
     });
 
-  const isLoggedIn = Cookies.get("isLoggedIn");
-
   return (
     <div className="flex justify-end bg-red-100 space-x-4 p-6">
-      {isLoggedIn ? (
+      {user ? (
         <>
           {user?.username}
           <div onClick={handleLogout} className="cursor-pointer ml-12">
