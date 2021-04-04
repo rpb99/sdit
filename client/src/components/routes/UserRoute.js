@@ -1,11 +1,11 @@
 import React from "react";
+import Cookies from "js-cookie";
 import { Route, Redirect } from "react-router-dom";
-import { useSelector } from "react-redux";
 
 const UserRoute = ({ children, ...rest }) => {
-  const { user } = useSelector((state) => ({ ...state }));
+  const isLoggedIn = Cookies.get("isLoggedIn");
 
-  return user ? <Route {...rest} /> : <Redirect to="/login" />;
+  return isLoggedIn ? <Route {...rest} /> : <Redirect to="/login" />;
 };
 
 export default UserRoute;
