@@ -2,6 +2,7 @@ import React from "react";
 import { Link, useHistory } from "react-router-dom";
 import Cookies from "js-cookie";
 import { useSelector, useDispatch } from "react-redux";
+import styled from "styled-components";
 
 import { logoutUser } from "../../../api/auth";
 
@@ -20,8 +21,15 @@ const Header = () => {
       history.push("/login");
     });
 
+  const HeaderContainer = styled.div`
+    display: flex;
+    justify-content: flex-end;
+    background: rgba(0, 0, 0, 0.24);
+    padding: 14px 0;
+  `;
+
   return (
-    <div className="flex justify-end bg-red-100 space-x-4 p-6">
+    <HeaderContainer>
       {user ? (
         <>
           <Link to="/profile">{user?.username}</Link>
@@ -39,7 +47,7 @@ const Header = () => {
           </Link>
         </>
       )}
-    </div>
+    </HeaderContainer>
   );
 };
 

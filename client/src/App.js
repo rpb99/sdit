@@ -8,9 +8,10 @@ import { currentUser } from "./api/auth";
 import UserRoute from "./components/routes/UserRoute";
 
 // Define Pages
-import Home from "./pages/Home";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
+import Home from "./pages/Home";
+import Student from "./pages/Student";
 import NotFound from "./pages/404NotFound";
 // User Routes
 import UserProfile from "./pages/UserProfile";
@@ -32,15 +33,16 @@ function App() {
   }, [dispatch]);
   return (
     <BrowserRouter>
-      <Layout>
-        <Switch>
-          <Route exact path={ROUTES.REGISTER} component={Register} />
-          <Route exact path={ROUTES.LOGIN} component={Login} />
+      <Switch>
+        <Route exact path={ROUTES.REGISTER} component={Register} />
+        <Route exact path={ROUTES.LOGIN} component={Login} />
+        <Layout>
           <Route exact path={ROUTES.HOME} component={Home} />
+          <UserRoute exact path={ROUTES.STUDENT} component={Student} />
           <UserRoute exact path={ROUTES.PROFILE} component={UserProfile} />
-          <Route component={NotFound} />
-        </Switch>
-      </Layout>
+        </Layout>
+        <Route component={NotFound} />
+      </Switch>
     </BrowserRouter>
   );
 }

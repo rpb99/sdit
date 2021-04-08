@@ -1,6 +1,12 @@
-import React from "react";
+import { useEffect } from "react";
+import { useSelector } from "react-redux";
 
-const Home = () => {
+const Home = ({ history }) => {
+  const { user } = useSelector((state) => ({ ...state }));
+  useEffect(() => {
+    !user && history.push("/login");
+  }, [user]);
+
   return <div>Home</div>;
 };
 

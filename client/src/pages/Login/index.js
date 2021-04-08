@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import Cookies from "js-cookie";
+import styled from "styled-components";
 
-import Input from "../../components/Form/Input";
+// import Input from "../../components/Form/Input";
 
 import { loginUser, currentUser } from "../../api/auth";
 
@@ -33,16 +34,20 @@ const Login = ({ history }) => {
   const handleChange = (e) =>
     setLoginForm({ ...loginForm, [e.target.name]: e.target.value });
 
+  const Input = styled.input`
+    border-bottom: 1px solid gray;
+  `;
+
   return (
     <div className="flex items-center justify-center mt-12">
       <form onSubmit={onSubmit} className="flex flex-col space-y-3">
-        <Input
+        <input
           onChange={handleChange}
           name="email"
           type="text"
           placeholder="Email"
         />
-        <Input
+        <input
           onChange={handleChange}
           name="password"
           type="password"

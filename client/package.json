@@ -19,6 +19,9 @@
     "styled-components": "^5.2.3",
     "web-vitals": "^1.0.1"
   },
+  "resolutions": {
+    "styled-components": "^5"
+  },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
