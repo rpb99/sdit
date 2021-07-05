@@ -3,44 +3,78 @@ import Cookies from "js-cookie";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import { useDispatch } from "react-redux";
 
-import Layout from "./components/global/Layout";
-import { currentUser } from "./api/auth";
-import UserRoute from "./components/routes/UserRoute";
+
+import { currentUser } from "./api/authApi";
+import PrivateRoute from "./components/routes/PrivateRoute";
 
 // Define Pages
 import Register from "./pages/Register";
 import Login from "./pages/Login";
 import Home from "./pages/Home";
 import Student from "./pages/Student";
+import Teacher from "./pages/Teacher";
+import StudentDetails from "./pages/StudentDetails";
 import NotFound from "./pages/404NotFound";
 // User Routes
-import UserProfile from "./pages/UserProfile";
+import Profile from "./pages/Profile";
 
 import * as ROUTES from "./constants";
 
 function App() {
   const dispatch = useDispatch();
   const isLoggedIn = Cookies.get("isLoggedIn");
+
   useEffect(() => {
-    if (isLoggedIn) {
+    if (isLoggedIn)
       currentUser().then(({ data }) =>
         dispatch({
           type: "LOGGED_IN_USER",
-          payload: data,
+          payload: data.data,
         })
       );
-    }
-  }, [dispatch]);
+  }, [dispatch, isLoggedIn]);
+
+  const adminRoutes = [
+    {
+      path: ROUTES.HOME,
+      component: Home,
+      exact: true,
+      roles: ['admin', 'student']
+    },
+    {
+      path: ROUTES.STUDENTDETAILS,
+      component: StudentDetails,
+      roles: ['admin']
+
+    },
+    {
+      path: ROUTES.STUDENTS,
+      component: Student,
+      roles: ['admin']
+
+    },
+    {
+      path: ROUTES.TEACHERS,
+      component: Teacher,
+      roles: ['admin']
+
+    },
+
+    {
+      path: ROUTES.PROFILE,
+      component: Profile,
+      roles: ['admin', 'student']
+    },
+  ];
+
   return (
     <BrowserRouter>
       <Switch>
-        <Route exact path={ROUTES.REGISTER} component={Register} />
-        <Route exact path={ROUTES.LOGIN} component={Login} />
-        <Layout>
-          <Route exact path={ROUTES.HOME} component={Home} />
-          <UserRoute exact path={ROUTES.STUDENT} component={Student} />
-          <UserRoute exact path={ROUTES.PROFILE} component={UserProfile} />
-        </Layout>
+        {adminRoutes.map((route, i) => (
+          <PrivateRoute key={i}  {...route} />
+        ))}
+        <Route path={ROUTES.REGISTER} component={Register} />
+        <Route path={ROUTES.LOGIN} component={Login} />
         <Route component={NotFound} />
       </Switch>
     </BrowserRouter>

@@ -1,31 +1,31 @@
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import Cookies from "js-cookie";
-import styled from "styled-components";
 
-// import Input from "../../components/Form/Input";
+import { loginUser, currentUser } from "../../api/authApi";
 
-import { loginUser, currentUser } from "../../api/auth";
 
-const Login = ({ history }) => {
+const Login = ({ history, location }) => {
+
   const dispatch = useDispatch();
   const { user } = useSelector((state) => ({ ...state }));
-  const [loginForm, setLoginForm] = useState({});
-
   useEffect(() => {
-    user && history.push("/");
-  }, [user]);
+    user && history.push(location.state?.from.pathname || '/')
+  }, [user, history, location])
+
+  const [loginForm, setLoginForm] = useState({});
 
   const onSubmit = (e) => {
     e.preventDefault();
     loginUser(loginForm).then(({ data }) => {
-      if (data.token) {
-        Cookies.set("isLoggedIn", true, { expires: 30, path: "/" });
-        currentUser().then(({ data }) =>
+      if (data.success) {
+        Cookies.set("isLoggedIn", true, { expires: 30, path: "/", secure: true });
+        currentUser().then(({ data }) => {
           dispatch({
             type: "LOGGED_IN_USER",
-            payload: data,
+            payload: data.data,
           })
+        }
         );
       }
     });
@@ -33,10 +33,6 @@ const Login = ({ history }) => {
 
   const handleChange = (e) =>
     setLoginForm({ ...loginForm, [e.target.name]: e.target.value });
-
-  const Input = styled.input`
-    border-bottom: 1px solid gray;
-  `;
 
   return (
     <div className="flex items-center justify-center mt-12">

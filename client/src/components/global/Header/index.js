@@ -1,12 +1,12 @@
-import React from "react";
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import Cookies from "js-cookie";
 import { useSelector, useDispatch } from "react-redux";
-import styled from "styled-components";
+import { AppBar, Toolbar, IconButton } from '@material-ui/core';
+import MenuIcon from '@material-ui/icons/Menu';
 
-import { logoutUser } from "../../../api/auth";
+import { logoutUser } from "../../../api/authApi";
 
-const Header = () => {
+const Header = ({ handleDrawerToggle, classes }) => {
   const history = useHistory();
   const dispatch = useDispatch();
   const { user } = useSelector((state) => ({ ...state }));
@@ -15,39 +15,38 @@ const Header = () => {
     logoutUser().then(() => {
       Cookies.remove("isLoggedIn", {
         path: "",
-        expires: new Date(new Date().getTime() + 5 * 1000),
+        expires: new Date(new Date().getTime() + 1),
+      });
+      Cookies.remove("userLogged", {
+        path: "",
+        expires: new Date(new Date().getTime() + 1),
       });
       dispatch({ type: "LOGOUT", payload: null });
       history.push("/login");
     });
 
-  const HeaderContainer = styled.div`
-    display: flex;
-    justify-content: flex-end;
-    background: rgba(0, 0, 0, 0.24);
-    padding: 14px 0;
-  `;
-
   return (
-    <HeaderContainer>
-      {user ? (
-        <>
-          <Link to="/profile">{user?.username}</Link>
-          <div onClick={handleLogout} className="cursor-pointer ml-12">
+    <AppBar position="fixed" className={classes.appBar} color="transparent">
+      <Toolbar>
+        <IconButton
+          color="inherit"
+          aria-label="open drawer"
+          edge="start"
+          onClick={handleDrawerToggle}
+          className={classes.menuButton}
+        >
+          <MenuIcon />
+        </IconButton>
+        <div className="flex flex-1 justify-end space-x-4 text-white">
+          <span>
+            {user.first_name}
+          </span>
+          <div onClick={handleLogout} className="cursor-pointer">
             Logout
           </div>
-        </>
-      ) : (
-        <>
-          <Link className="text-gray-600 hover:text-blue-800" to="/login">
-            Login
-          </Link>
-          <Link className="text-gray-600 hover:text-blue-800" to="/register">
-            Register
-          </Link>
-        </>
-      )}
-    </HeaderContainer>
+        </div>
+      </Toolbar>
+    </AppBar>
   );
 };
 

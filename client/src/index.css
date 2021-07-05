@@ -15,6 +15,31 @@ a {
     rgba(0, 58, 183, 1),
     rgba(0, 58, 183, 0.1)
   ) !important;
-  color: #fff;
-  border-radius: 25px;
+}
+
+.bg-menu-item:hover {
+  background: linear-gradient(
+    to right,
+    rgba(0, 58, 183, 1),
+    rgba(0, 58, 183, 0.1)
+  ) !important;
+;
+}
+
+.btn-primary {
+  background: rgba(0, 0,0,.24);
+  border-radius: 6px;
+  padding: 6px 24px;
+}
+
+.label.Mui-focused {
+  color: 'white',
+}
+
+.MuiOutlinedInput-root.fieldset{
+  border-color: 'white'
+}
+
+.MuiFormLabel-root {
+  color: '#fff'
 }

@@ -2,9 +2,7 @@ import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Cookies from "js-cookie";
 
-import Input from "../../components/Form/Input";
-
-import { createUser, currentUser } from "../../api/auth";
+import { createUser, currentUser } from "../../api/authApi";
 
 const Register = ({ history }) => {
   const dispatch = useDispatch();
@@ -13,7 +11,7 @@ const Register = ({ history }) => {
 
   useEffect(() => {
     user && history.push("/");
-  }, [user]);
+  }, [user, history]);
 
   const onSubmit = (e) => {
     e.preventDefault();
@@ -37,19 +35,19 @@ const Register = ({ history }) => {
   return (
     <div className="flex items-center justify-center mt-12">
       <form onSubmit={onSubmit} className="flex flex-col space-y-3">
-        <Input
+        <input
           onChange={handleChange}
           name="username"
           type="text"
           placeholder="Username"
         />
-        <Input
+        <input
           onChange={handleChange}
           name="email"
           type="text"
           placeholder="Email"
         />
-        <Input
+        <input
           onChange={handleChange}
           name="password"
           type="password"

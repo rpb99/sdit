@@ -1,6 +1,8 @@
-export const HOME = "/";
 export const LOGIN = "/login";
 export const REGISTER = "/register";
-// user routes
+// admin routes
+export const HOME = "/";
 export const PROFILE = "/profile";
-export const STUDENT = "/student";
+export const STUDENTS = "/students";
+export const TEACHERS = "/teachers";
+export const STUDENTDETAILS = "/students/:id";

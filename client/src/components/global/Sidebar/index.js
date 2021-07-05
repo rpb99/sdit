@@ -1,78 +1,40 @@
-import React from "react";
-import styled from "styled-components";
-import { NavLink } from "react-router-dom";
+import React from 'react'
+import { Drawer, Hidden } from '@material-ui/core';
 
-import Logo from "../../../assets/images/logo.png";
-
-const StyledNavLink = ({ className, children, ...props }) => (
-  <NavLink {...props} className={className}>
-    {children}
-  </NavLink>
-);
-
-const Sidebar = styled.div`
-  background: rgba(0, 0, 0, 0.24);
-  width: 220px;
-  height: 100vh;
-  color: white;
-  padding: 0 6px;
-`;
-
-const LogoContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  margin: 25px 0;
-`;
-
-const Menu = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
-
-const Item = styled(StyledNavLink)`
-  margin-bottom: 6px;
-  padding: 6px 12px;
-  &:hover {
-    background: linear-gradient(
-      to right,
-      rgba(0, 58, 183, 1),
-      rgba(0, 58, 183, 0.1)
-    ) !important;
-    color: #fff;
-    border-radius: 25px;
-  }
-`;
-
-const links = [
-  {
-    path: "/",
-    label: "Dashboard",
-  },
-  {
-    path: "/student",
-    label: "Siswa",
-  },
-];
-
-const index = () => {
+const Sidebar = ({ classes, theme, drawer, mobileOpen, handleDrawerToggle, container }) => {
   return (
-    <Sidebar>
-      <LogoContainer>
-        <img src={Logo} />
-        <div>SDIT Al-Manar</div>
-        <div>Pekanbaru</div>
-      </LogoContainer>
-      <Menu>
-        {links?.map((l, idx) => (
-          <Item key={idx} exact to={l.path} activeClassName="active_route">
-            {l.label}
-          </Item>
-        ))}
-      </Menu>
-    </Sidebar>
-  );
-};
+    <nav className={classes.drawer} aria-label="mailbox folders">
+      {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
+      <Hidden xsUp implementation="css">
+        <Drawer
+          container={container}
+          variant="temporary"
+          anchor={theme.direction === 'rtl' ? 'right' : 'left'}
+          open={mobileOpen}
+          onClose={handleDrawerToggle}
+          classes={{
+            paper: classes.drawerPaper,
+          }}
+          ModalProps={{
+            keepMounted: true, // Better open performance on mobile.
+          }}
+        >
+          {drawer}
+        </Drawer>
+      </Hidden>
+      <Hidden smDown implementation="css">
+        <Drawer
+          classes={{
+            paper: classes.drawerPaper,
+          }}
+          variant="permanent"
+          open
+        >
+          {drawer}
+        </Drawer>
+      </Hidden>
+    </nav>
+  )
+}
 
-export default index;
+export default Sidebar

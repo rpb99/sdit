@@ -6,7 +6,6 @@ const UserProfile = () => {
 
   return (
     <div className="flex justify-center">
-      <input type="text" className="border-b" value={user?.username} />
       <input type="text" className="border-b" value={user?.email} />
     </div>
   );

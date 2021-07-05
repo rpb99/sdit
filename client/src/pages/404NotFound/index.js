@@ -3,11 +3,13 @@ import { Link } from "react-router-dom";
 
 const NotFound = () => {
   return (
-    <>
-      <h1>Oppss!!</h1>
+    <div className="flex flex-col mt-12 mx-80 text-gray-500">
       <p>We lost too far!</p>
-      <Link to="/">Back to HomePage</Link>
-    </>
+      <h1 className="text-6xl">404 NOT FOUND</h1>
+      <Link to="/" className="text-gray-500 self-end">
+        Back to Dashboard
+      </Link>
+    </div>
   );
 };
 
