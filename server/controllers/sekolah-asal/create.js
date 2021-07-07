@@ -3,6 +3,7 @@ const v = new Validator();
 
 const { SekolahAsal } = require('../../models')
 
+
 module.exports = async (req, res) => {
     const schema = {
         id_siswa: "number|empty:false",
@@ -14,6 +15,7 @@ module.exports = async (req, res) => {
 
     if (validate.length)
         return res.status(400).json({ status: "error", message: validate });
+
 
     const sekolahAsal = await SekolahAsal.create(req.body);
 
