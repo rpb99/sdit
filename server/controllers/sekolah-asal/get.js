@@ -1,7 +1,7 @@
 const { SekolahAsal } = require("../../models");
 
 module.exports = async (req, res) => {
-  const sekolahAsal = await SekolahAsal.findAll({ where: { id_siswa: req.query.id_siswa } });
+  const sekolahAsal = await SekolahAsal.findAll({ where: { id_siswa: req.params.id_siswa } });
 
   if (!sekolahAsal)
     return res

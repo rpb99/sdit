@@ -6,7 +6,6 @@ const { SekolahAsal } = require('../../models')
 
 module.exports = async (req, res) => {
     const schema = {
-        id_siswa: "number|empty:false",
         nama: "string|empty:false",
         surat_pindah: "string|empty:false",
     };
@@ -16,6 +15,7 @@ module.exports = async (req, res) => {
     if (validate.length)
         return res.status(400).json({ status: "error", message: validate });
 
+    req.body.id_siswa = req.query.id_siswa
 
     const sekolahAsal = await SekolahAsal.create(req.body);
 
