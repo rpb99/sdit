@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import Cookies from "js-cookie";
-import { BrowserRouter, Switch, Route } from "react-router-dom";
+import { BrowserRouter, Switch, Route, useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
 
 
@@ -11,7 +11,7 @@ import PrivateRoute from "./components/routes/PrivateRoute";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
 import Home from "./pages/Home";
-import Student from "./pages/Student";
+import Student from "./pages/Students";
 import Teacher from "./pages/Teacher";
 import StudentDetails from "./pages/StudentDetails";
 import NotFound from "./pages/404NotFound";
@@ -22,16 +22,23 @@ import * as ROUTES from "./constants";
 
 function App() {
   const dispatch = useDispatch();
+  const history = useHistory()
   const isLoggedIn = Cookies.get("isLoggedIn");
 
+
   useEffect(() => {
-    if (isLoggedIn)
-      currentUser().then(({ data }) =>
-        dispatch({
-          type: "LOGGED_IN_USER",
-          payload: data.data,
-        })
-      );
+    if (isLoggedIn) {
+      currentUser()
+        .then(({ data }) =>
+          dispatch({
+            type: "LOGGED_IN_USER",
+            payload: data.data,
+          })
+        )
+        .catch((({ response }) => {
+          console.log(response)
+        }));
+    }
   }, [dispatch, isLoggedIn]);
 
   const adminRoutes = [

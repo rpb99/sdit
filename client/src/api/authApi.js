@@ -10,7 +10,7 @@ export const createUser = async (user) =>
   await api.post("/register", user);
 
 export const logoutUser = async () =>
-  await api.get("/logout");
+  await api.post("/logout");
 
 export const currentUser = async () =>
   await api.get("/current-user");

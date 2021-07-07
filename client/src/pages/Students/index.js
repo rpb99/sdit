@@ -111,6 +111,10 @@ const Student = () => {
     setForm({ ...form, tgl_lahir: date });
   };
 
+  const handleChangeFile = ({ target }) => {
+    setForm({ ...form, image: target.files[0] })
+  }
+
   const handleSubmit = () => {
     createStudent(form).then(({ data }) => {
       loadTotalStudents()
@@ -200,6 +204,7 @@ const Student = () => {
         open={openDialogForm}
         form={form}
         hasStudentData={hasStudentData}
+        handleChangeFile={handleChangeFile}
       />
       <DialogConfirmation open={openDialogDelete} name={studentData.nama} handleDelete={handleDelete} handleClose={handleCloseDialogDelete} />
       <Snackbar message={alertMessage} open={isAlert} handleClose={handleClose} />

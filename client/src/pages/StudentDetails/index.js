@@ -4,8 +4,8 @@ import { useParams, useHistory } from 'react-router-dom'
 import Snackbar from '../../components/Feedback/Snackbar'
 import Tabs from '../../components/Navigation/Tabs';
 
-import { getOriginSchool } from '../../api/originSchoolApi'
-import { getStudent, updateStudent } from '../../api/studentsApi'
+import { getOriginSchool, createOriginSchool } from '../../api/originSchoolApi'
+import { getStudent } from '../../api/studentsApi'
 
 import StudentProfile from './StudentProfile';
 import OriginSchool from './OriginSchool';
@@ -21,12 +21,27 @@ const initialFormProfileState = {
     foto: ""
 }
 
+const initSchoolState = {
+    nama: "",
+    surat_pindah: "",
+    alamat: "",
+    tgl_masuk: "",
+    tgl_keluar: "",
+    tingkat: "",
+    survei: "",
+}
+
+
+
 const StudentDetails = () => {
+
     const history = useHistory()
     const { id } = useParams();
 
     const [formProfile, setFormProfile] = useState(initialFormProfileState)
-    const [formSchool, setFormSchool] = useState({})
+    const [formSchool, setFormSchool] = useState([initSchoolState])
+    const [errors, setErrors] = useState([])
+
 
     const [alert, setAlert] = useState({
         open: false,
@@ -49,15 +64,30 @@ const StudentDetails = () => {
                 response.status === 404 && history.push('/not-found')
             })
 
-    const handleSubmit = (e) => {
-        e.preventDefault()
-        updateStudent(formProfile.id, formProfile)
-            .then(({ data }) => {
-                handleAlertClose()
-                setAlert({ message: 'Data profile berhasil di ubah', open: true })
+    const handleSubmitSchool = () => {
+        // createOriginSchool
+        let hasEmptyValue = []
+        let fieldRequired = ['tingkat', 's']
+
+        // Extract form
+        fieldRequired.map(nameRequired => {
+            Object.values((formSchool)).map((item, extractId) => {
+                // Get field empty value
+                Object.entries(item).map((value, idx) => {
+                    if (nameRequired == value[0] && !value[1] ||
+                        nameRequired == value[0] && value[1] === null) {
+                        hasEmptyValue.push({ 'id': extractId + 1, 'name': value[0] })
+                    }
+                }
+                )
             })
-            .catch(({ response }) => console.log(response))
+        })
+
+        setErrors(hasEmptyValue)
+
     }
+
+
 
     const handleAlertClose = () => {
         setAlert({ message: '', open: false })
@@ -67,16 +97,20 @@ const StudentDetails = () => {
 
     const contents = [
         <StudentProfile
+            setAlert={setAlert}
             setForm={setFormProfile}
             form={formProfile}
-            handleSubmit={handleSubmit}
+            handleAlertClose={handleAlertClose}
         />,
-        // <OriginSchool
-        //     handleChange={handleChange}
-        //     form={form}
-        //     handleDateChange={handleDateChange}
-        //     handleSubmit={handleSubmit}
-        // />
+        <OriginSchool
+            // handleChange={handleChange}
+            form={formSchool}
+            setForm={setFormSchool}
+            newState={initSchoolState}
+            handleSubmit={handleSubmitSchool}
+            errors={errors}
+            setErrors={setErrors}
+        />
     ]
 
     return (
@@ -91,3 +125,18 @@ const StudentDetails = () => {
 }
 
 export default StudentDetails
+
+
+  // Extract form
+//   Object.values((formSchool)).map((item, extractId) => {
+//     // Get field empty value
+//     fieldRequired.map(nameRequired => {
+//         Object.entries(item).map((value, idx) => {
+
+//             if (nameRequired == value[0] && !value[1] || value[1] === null) {
+//                 hasEmptyValue.push({ 'id': extractId + 1, 'name': value[0] })
+//             }
+//         }
+//         )
+//     })
+// })

@@ -7,7 +7,7 @@ import MomentUtils from '@date-io/moment';
 import DialogForm from '../../components/Feedback/Dialog/DialogForm'
 
 
-const FormStudent = ({ handleSubmit, handleDateChange, handleClose, handleChange, form, open, hasStudentData }) => {
+const FormStudent = ({ handleChangeFile, handleSubmit, handleDateChange, handleClose, handleChange, form, open, hasStudentData }) => {
     return (
         <div>
             <DialogForm handleSubmit={handleSubmit} handleClose={handleClose} open={open}>
@@ -93,6 +93,7 @@ const FormStudent = ({ handleSubmit, handleDateChange, handleClose, handleChange
                         value={form.alamat}
                         onChange={handleChange}
                     />
+                    <input type="file" name="image" onChange={handleChangeFile} />
                 </form>
             </DialogForm>
         </div>

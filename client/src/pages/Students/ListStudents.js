@@ -4,6 +4,7 @@ import { dateFormat } from '../../utils/date'
 
 
 const ListStudents = ({ handleClick, handleRowClick, handleClose, students, loading, cursor, handleDelete }) => {
+    const studentHeader = ['NIS', 'Nama', 'Tanggal Lahir', 'Tempat Lahir', 'Jenis Kelamin']
     return (
         <>
             {loading ? "Loading..." :
@@ -11,13 +12,10 @@ const ListStudents = ({ handleClick, handleRowClick, handleClose, students, load
                     <div className="overflow-x-auto">
                         <table className="min-w-full divide-y divide-gray-300">
                             <thead>
-
                                 <tr>
-                                    <th className="py-6 px-6 font-medium tracking-wider text-white text-left whitespace-nowrap">NIS</th>
-                                    <th className="py-6 px-6 font-medium tracking-wider text-white text-left whitespace-nowrap">Nama</th>
-                                    <th className="py-6 px-6 font-medium tracking-wider text-white text-left whitespace-nowrap">Tanggal Lahir</th>
-                                    <th className="py-6 px-6 font-medium tracking-wider text-white text-left whitespace-nowrap">Tempat Lahir</th>
-                                    <th className="py-6 px-6 font-medium tracking-wider text-white text-left whitespace-nowrap">Jenis Kelamin</th>
+                                    {studentHeader.map((header, idx) =>
+                                        <th key={idx} className="py-6 px-6 font-medium tracking-wider text-white text-left whitespace-nowrap">{header}</th>
+                                    )}
                                 </tr>
                             </thead>
                             <tbody >
@@ -28,7 +26,7 @@ const ListStudents = ({ handleClick, handleRowClick, handleClose, students, load
                                             handleClick(e, student);
                                         }} >
                                         <td className="px-6 py-4 text-white whitespace-nowrap">{student.nis}</td>
-                                        <td className="px-6 py-4 text-white whitespace-nowrap">{student.nama}</td>
+                                        <td className="px-6 py-4 text-white whitespace-nowrap">{student.nama.substring(0, 20)}{student.nama.length >= 20 && "..."}</td>
                                         <td className="px-6 py-4 text-white whitespace-nowrap">{dateFormat(student.tgl_lahir)}</td>
                                         <td className="px-6 py-4 text-white whitespace-nowrap">{student.tempat_lahir}</td>
                                         <td className="px-6 py-4 text-white whitespace-nowrap">{student.jenis_kelamin === "L" ? "Laki-laki" : "Perempuan"}</td>

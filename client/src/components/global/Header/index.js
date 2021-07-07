@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { useHistory } from "react-router-dom";
 import Cookies from "js-cookie";
 import { useSelector, useDispatch } from "react-redux";
@@ -10,6 +11,9 @@ const Header = ({ handleDrawerToggle, classes }) => {
   const history = useHistory();
   const dispatch = useDispatch();
   const { user } = useSelector((state) => ({ ...state }));
+  const isLoggedIn = Cookies.get("isLoggedIn");
+
+
 
   const handleLogout = () =>
     logoutUser().then(() => {
@@ -17,13 +21,13 @@ const Header = ({ handleDrawerToggle, classes }) => {
         path: "",
         expires: new Date(new Date().getTime() + 1),
       });
-      Cookies.remove("userLogged", {
-        path: "",
-        expires: new Date(new Date().getTime() + 1),
-      });
       dispatch({ type: "LOGOUT", payload: null });
       history.push("/login");
     });
+
+  if (isLoggedIn === undefined) {
+    handleLogout()
+  }
 
   return (
     <AppBar position="fixed" className={classes.appBar} color="transparent">

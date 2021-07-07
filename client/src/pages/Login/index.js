@@ -15,11 +15,13 @@ const Login = ({ history, location }) => {
 
   const [loginForm, setLoginForm] = useState({});
 
+  var inOneDay = new Date(new Date().getTime() + 1 * 24 * 60 * 60 * 1000);
+
   const onSubmit = (e) => {
     e.preventDefault();
     loginUser(loginForm).then(({ data }) => {
       if (data.success) {
-        Cookies.set("isLoggedIn", true, { expires: 30, path: "/", secure: true });
+        Cookies.set("isLoggedIn", true, { expires: inOneDay, path: "/", secure: true });
         currentUser().then(({ data }) => {
           dispatch({
             type: "LOGGED_IN_USER",

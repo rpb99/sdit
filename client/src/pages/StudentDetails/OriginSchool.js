@@ -1,12 +1,9 @@
-import React from 'react'
+import { useState } from 'react'
 import {
-    TextField,
-    NativeSelect,
-    InputLabel,
-    MenuItem,
-    FormControl,
     makeStyles
 } from '@material-ui/core'
+
+import TextField from '../../components/Form/TextField'
 import SaveIcon from '@material-ui/icons/Save';
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
 import MomentUtils from '@date-io/moment';
@@ -20,107 +17,97 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const StudentProfile = ({ handleChange, handleDateChange, handleSubmit, form }) => {
+
+
+
+
+
+
+
+const OriginSchool = ({ errors, setErrors, form, setForm, newState, handleSubmit }) => {
+
     const classes = useStyles();
+
+
+
+    let cloneForm = [...form];
+    let cloneErrors = [...errors];
+
+    const handleChange = (e, idx) => {
+        let { name, value } = e.target
+
+        cloneForm[idx][name] = value;
+        setForm(cloneForm)
+
+        if (!value) {
+            let arrErrors = {}
+            arrErrors['name'] = name
+            arrErrors['id'] = idx + 1
+            setErrors([...errors, arrErrors])
+        } else {
+            cloneErrors = errors.filter(error => error['name'] !== name || error['id'] !== idx + 1)
+            setErrors(cloneErrors)
+        }
+    }
+
+    const handleAddForm = () => {
+        setForm(prevState => [...prevState, { ...newState }])
+    }
+
+    const handleDeleteForm = (idx) => {
+        cloneErrors = errors.filter(error => error['id'] !== idx + 1)
+        setErrors(cloneErrors)
+
+        cloneForm.splice(idx, 1)
+        setForm(cloneForm)
+    }
+
+
     return (
-        <form className="w-full text-white flex flex-col space-y-6">
-            <TextField variant="outlined" color="secondary" autoFocus margin="dense" id="nis" name="nis" label="NIS" fullWidth
-                value={
-                    form.nis
-                }
-                onChange={handleChange}
-                disabled
-            />
-            <TextField variant="outlined" color="secondary" autoFocus margin="dense" id="nama" name="nama" label="Nama" fullWidth
-                value={
-                    form.nama
-                }
-                InputProps={{
-                    className: classes.input
-                }}
-                InputLabelProps={{
-                    className: classes.label
-                }}
-                onChange={handleChange} />
-            <TextField
-                variant="outlined"
-                autoFocus margin="dense"
-                id="tempat_lahir" name="tempat_lahir"
-                label="Tempat Lahir"
-                fullWidth
-                value={form.tempat_lahir}
-                InputProps={{
-                    className: classes.input
-                }}
-                InputLabelProps={{
-                    className: classes.label
-                }}
-                onChange={handleChange} />
-            <MuiPickersUtilsProvider utils={MomentUtils}>
-                <KeyboardDatePicker disableFuture inputVariant="outlined" margin="normal" id="tgl_lahir" name="tgl_lahir" label="Tanggal Lahir" format="DD MMMM yyyy"
-                    value={
-                        form.tgl_lahir
-                    }
-                    onChange={handleDateChange}
-                    KeyboardButtonProps={
-                        { 'aria-label': 'tanggal lahir' }
-                    }
-                    InputProps={{
-                        className: classes.input
-                    }}
-                    InputLabelProps={{
-                        className: classes.label
-                    }}
-                    fullWidth />
-            </MuiPickersUtilsProvider>
-            <TextField
-                variant="outlined"
-                id="select-jk"
-                label="jenis Kelamin"
-                value={form.jenis_kelamin}
-                select onChange={handleChange}
-                InputProps={{
-                    className: classes.input
-                }}
-                InputLabelProps={{
-                    className: classes.label
-                }}
-            >
-                <MenuItem value="L">Laki-laki</MenuItem>
-                <MenuItem value="P">Perempuan</MenuItem>
-            </TextField>
-            <TextField variant="outlined" autoFocus margin="dense" id="telepon" name="telepon" label="Telepon" fullWidth
-                value={
-                    form.telepon
-                }
-                onChange={handleChange}
-                InputProps={{
-                    className: classes.input
-                }}
-                InputLabelProps={{
-                    className: classes.label
-                }}
-            />
-            <TextField variant="outlined" autoFocus margin="dense" id="alamat" name="alamat" label="Alamat" fullWidth
-                value={
-                    form.alamat
-                }
-                onChange={handleChange}
-                InputProps={{
-                    className: classes.input
-                }}
-                InputLabelProps={{
-                    className: classes.label
-                }}
-            />
-            <button className="text-blue-600 text-sm flex items-center" onClick={handleSubmit}>
-                <SaveIcon />
-                <div>
-                    Simpan
-</div>
-            </button>
-        </form>
+        <>
+            {JSON.stringify(errors)}
+            <div className="flex justify-end mb-6">
+                <button className=" px-6 py-1 rounded bg-black bg-opacity-40 hover:bg-opacity-60 transition duration-400 text-white" onClick={handleAddForm}>Tambah Data</button>
+            </div>
+            {form.length ? form.map((item, idx) =>
+                <div className="rounded mb-6 bg-black bg-opacity-20 py-6 px-4" key={idx}>
+                    <div className="flex justify-end" >
+                        <button className="bg-red-700 bg-opacity-20 text-red-400 px-3 py-1 rounded text-xs hover:bg-opacity-30 transition duration-300" onClick={() => handleDeleteForm(idx)}>Hapus</button>
+                    </div>
+                    <TextField
+                        onChange={(e) => handleChange(e, idx)}
+                        name="nama"
+                        label="Nama Sekolah"
+                        errors={errors}
+                        textFieldIndex={idx}
+                        value={item.nama}
+
+                    />
+                    <TextField
+                        onChange={(e) => handleChange(e, idx)}
+                        name="surat_pindah"
+                        label="Surat Pindah"
+                        value={item.surat_pindah}
+                        errors={errors}
+                        textFieldIndex={idx}
+
+                    />
+                    <TextField
+                        onChange={(e) => handleChange(e, idx)}
+                        name="tingkat"
+                        label="Tingkat"
+                        value={item.tingkat}
+                        errors={errors}
+                        textFieldIndex={idx}
+
+                    />
+                </div>
+            ) : <div className="mt-6 text-center text-gray-400">Tidak Ada Data</div>}
+
+            <button onClick={handleSubmit}>Simpan</button>
+        </>
+
     )
 }
 
-export default StudentProfile
+export default OriginSchool
