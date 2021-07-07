@@ -1,4 +1,3 @@
-import { useEffect } from 'react'
 import { useHistory } from "react-router-dom";
 import Cookies from "js-cookie";
 import { useSelector, useDispatch } from "react-redux";

@@ -38,8 +38,8 @@ const Index = ({ name, label, textFieldIndex, errors, ...props }) => {
             {...props}
             {...attr}
             name={name}
-            error={hasError == undefined ? false : true}
-            helperText={hasError == undefined ? "" : `${label} tidak boleh kosong`}
+            error={hasError === undefined ? false : true}
+            helperText={hasError === undefined ? "" : `${label} tidak boleh kosong`}
         />
     )
 }

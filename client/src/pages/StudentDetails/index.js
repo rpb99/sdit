@@ -1,10 +1,10 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { useParams, useHistory } from 'react-router-dom'
 
 import Snackbar from '../../components/Feedback/Snackbar'
 import Tabs from '../../components/Navigation/Tabs';
 
-import { getOriginSchool, createOriginSchool } from '../../api/originSchoolApi'
+import { getOriginSchool } from '../../api/originSchoolApi'
 import { getStudent } from '../../api/studentsApi'
 
 import StudentProfile from './StudentProfile';
@@ -25,8 +25,8 @@ const initSchoolState = {
     nama: "",
     surat_pindah: "",
     alamat: "",
-    tgl_masuk: "",
-    tgl_keluar: "",
+    tgl_masuk: new Date(),
+    tgl_keluar: new Date(),
     tingkat: "",
     survei: "",
 }
@@ -36,12 +36,20 @@ const initSchoolState = {
 const StudentDetails = () => {
 
     const history = useHistory()
-    const { id } = useParams();
+    const studentId = useParams().id;
 
     const [formProfile, setFormProfile] = useState(initialFormProfileState)
     const [formSchool, setFormSchool] = useState([initSchoolState])
     const [errors, setErrors] = useState([])
-
+    const loadOriginSchool = useCallback((id) => getOriginSchool(studentId).then(({ data }) => setFormSchool(data.data)), [studentId])
+    const loadStudent = useCallback((id) =>
+        getStudent(studentId)
+            .then(({ data }) => {
+                setFormProfile(data.data)
+            })
+            .catch(({ response }) => {
+                response.status === 404 && history.push('/not-found')
+            }), [history, studentId])
 
     const [alert, setAlert] = useState({
         open: false,
@@ -51,43 +59,7 @@ const StudentDetails = () => {
     useEffect(() => {
         loadOriginSchool()
         loadStudent()
-    }, [])
-
-    const loadOriginSchool = () => getOriginSchool(id).then(({ data }) => setFormSchool(data.data))
-
-    const loadStudent = () =>
-        getStudent(id)
-            .then(({ data }) => {
-                setFormProfile(data.data)
-            })
-            .catch(({ response }) => {
-                response.status === 404 && history.push('/not-found')
-            })
-
-    const handleSubmitSchool = () => {
-        // createOriginSchool
-        let hasEmptyValue = []
-        let fieldRequired = ['tingkat', 's']
-
-        // Extract form
-        fieldRequired.map(nameRequired => {
-            Object.values((formSchool)).map((item, extractId) => {
-                // Get field empty value
-                Object.entries(item).map((value, idx) => {
-                    if (nameRequired == value[0] && !value[1] ||
-                        nameRequired == value[0] && value[1] === null) {
-                        hasEmptyValue.push({ 'id': extractId + 1, 'name': value[0] })
-                    }
-                }
-                )
-            })
-        })
-
-        setErrors(hasEmptyValue)
-
-    }
-
-
+    }, [loadOriginSchool, loadStudent])
 
     const handleAlertClose = () => {
         setAlert({ message: '', open: false })
@@ -97,9 +69,9 @@ const StudentDetails = () => {
 
     const contents = [
         <StudentProfile
-            setAlert={setAlert}
             setForm={setFormProfile}
             form={formProfile}
+            setAlert={setAlert}
             handleAlertClose={handleAlertClose}
         />,
         <OriginSchool
@@ -107,9 +79,11 @@ const StudentDetails = () => {
             form={formSchool}
             setForm={setFormSchool}
             newState={initSchoolState}
-            handleSubmit={handleSubmitSchool}
             errors={errors}
             setErrors={setErrors}
+            loadOriginSchool={loadOriginSchool}
+            setAlert={setAlert}
+            handleAlertClose={handleAlertClose}
         />
     ]
 

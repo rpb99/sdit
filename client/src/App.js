@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import Cookies from "js-cookie";
-import { BrowserRouter, Switch, Route, useHistory } from "react-router-dom";
+import { BrowserRouter, Switch, Route } from "react-router-dom";
 import { useDispatch } from "react-redux";
 
 
@@ -22,7 +22,6 @@ import * as ROUTES from "./constants";
 
 function App() {
   const dispatch = useDispatch();
-  const history = useHistory()
   const isLoggedIn = Cookies.get("isLoggedIn");
 
 

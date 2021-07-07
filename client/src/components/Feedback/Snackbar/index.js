@@ -8,7 +8,7 @@ function Alert(props) {
 
 
 const SnackbarComponent = ({ message, open, handleClose }) => {
-    const [state, setState] = useState({
+    const [state] = useState({
         vertical: 'bottom',
         horizontal: 'center',
     });

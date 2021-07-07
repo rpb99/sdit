@@ -1,10 +1,7 @@
 import { useState } from 'react'
 import {
     TextField,
-    NativeSelect,
-    InputLabel,
     MenuItem,
-    FormControl,
     makeStyles
 } from '@material-ui/core'
 import SaveIcon from '@material-ui/icons/Save';
@@ -48,12 +45,11 @@ const StudentProfile = ({ setAlert, setForm, form, handleAlertClose }) => {
 
         formData.append('image', form.image)
 
-        obj.map((item) => {
-            formData.set(item[0], item[1]);
-        })
+        obj.map((item) => formData.set(item[0], item[1]))
 
         updateStudent(form.id, formData, config)
             .then((res) => {
+                console.log(uploadProgress)
                 handleAlertClose()
                 setAlert({ message: 'Data profile berhasil di ubah', open: true })
             })

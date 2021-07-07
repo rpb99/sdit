@@ -3,7 +3,7 @@ import { TextField, InputAdornment } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles';
 import { Search } from '@material-ui/icons';
 import { useHistory } from 'react-router-dom'
-import { getAllStudents, getTotalStudents, createStudent, deleteStudent, updateStudent } from '../../api/studentsApi'
+import { getAllStudents, getTotalStudents, createStudent, deleteStudent } from '../../api/studentsApi'
 import ListStudents from './ListStudents'
 import Card from '../../components/Surfaces/Card'
 import FormStudent from './FormStudent'
