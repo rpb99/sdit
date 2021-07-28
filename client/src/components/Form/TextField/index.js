@@ -13,7 +13,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-const Index = ({ name, label, textFieldIndex, errors, ...props }) => {
+const Index = ({ name, label, textFieldIndex, required, errors, ...props }) => {
     const classes = useStyles();
 
     const id = textFieldIndex + 1
@@ -24,7 +24,7 @@ const Index = ({ name, label, textFieldIndex, errors, ...props }) => {
         label: label,
         margin: "dense",
         variant: "outlined",
-        required: true,
+        required,
         fullWidth: true,
         InputLabelProps: { className: classes.label },
         InputProps: { className: classes.input },
@@ -37,7 +37,6 @@ const Index = ({ name, label, textFieldIndex, errors, ...props }) => {
         <TextField
             {...props}
             {...attr}
-            name={name}
             error={hasError === undefined ? false : true}
             helperText={hasError === undefined ? "" : `${label} tidak boleh kosong`}
         />

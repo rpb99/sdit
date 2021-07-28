@@ -67,6 +67,7 @@ const StudentDetails = () => {
 
     const tabs = ["Profile", "Sekolah Asal", "Orang Tua"]
 
+
     const contents = [
         <StudentProfile
             setForm={setFormProfile}
@@ -89,6 +90,15 @@ const StudentDetails = () => {
 
     return (
         <div>
+            <div className="flex flex-col space-y-3 my-3">
+                <div className="w-44">
+                    <img src={process.env.REACT_APP_FILE_URL + formProfile.foto} alt="foto-siswa" />
+                </div>
+                <div>
+                    <div className="text-gray-300 text-lg">{formProfile.nama}</div>
+                    <div className="text-gray-400 text-xs">{formProfile.nis}</div>
+                </div>
+            </div>
             <Tabs
                 tabs={tabs}
                 contents={contents} />

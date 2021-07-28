@@ -9,6 +9,15 @@ module.exports = {
         primaryKey: true,
         allowNull: false,
       },
+      nis: {
+        type: Sequelize.STRING(50),
+        allowNull: false,
+        references: {
+          model: "siswa",
+          key: "nis"
+
+        },
+      },
       first_name: {
         type: Sequelize.STRING(100),
         allowNull: false,

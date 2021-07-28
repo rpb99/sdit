@@ -1,11 +1,12 @@
 const Validator = require("fastest-validator");
 const v = new Validator();
 
-const { User } = require("../../models");
+const { User, Student } = require("../../models");
 const { sendTokenRes } = require("../../helper");
 
 module.exports = async (req, res) => {
   const schema = {
+    nis: "string|empty:false",
     first_name: "string|empty:false",
     last_name: "string|optional",
     email: "string|empty:false",
@@ -19,6 +20,12 @@ module.exports = async (req, res) => {
     return res.status(400).json({ status: "error", message: validate });
 
   try {
+    const student = await Student.findOne({ where: { nis: req.body.nis } })
+
+    if (!student) {
+      return res.status(404).json({ status: "error", message: 'NIS anda belum terdaftar' });
+    }
+
     const user = await User.create(req.body);
 
     sendTokenRes(user, 201, res);

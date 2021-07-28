@@ -103,7 +103,7 @@ const StudentProfile = ({ setAlert, setForm, form, handleAlertClose }) => {
             InputLabelProps: { className: classes.label },
             InputProps: { className: classes.input },
             onChange: handleChange,
-            disabled: true
+            disabled: true,
         },
         {
             id: "nama",
@@ -206,7 +206,7 @@ const StudentProfile = ({ setAlert, setForm, form, handleAlertClose }) => {
 
     return (
         <form onSubmit={handleSubmit} className="w-full text-white flex flex-col space-y-6">
-            <TextField {...nis} />
+            {/* <TextField {...nis} /> */}
             <TextField {...nama} />
             <TextField {...tempatLahir} />
             <MuiPickersUtilsProvider utils={MomentUtils}>

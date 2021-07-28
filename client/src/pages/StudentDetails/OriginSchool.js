@@ -1,8 +1,9 @@
 import { useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { createOriginSchool, updateOriginSchool, deleteOriginSchool } from '../../api/originSchoolApi'
-import TextField from '../../components/Form/TextField'
 import SaveIcon from '@material-ui/icons/Save';
+import TextField from '../../components/Form/TextField'
+import DateTimePicker from '../../components/Form/DateTimePicker'
 
 const OriginSchool = ({ errors, setErrors, form, setForm, newState, loadOriginSchool, setAlert, handleAlertClose }) => {
     const studentId = useParams().id
@@ -14,7 +15,7 @@ const OriginSchool = ({ errors, setErrors, form, setForm, newState, loadOriginSc
 
 
     const handleSubmit = () => {
-        let fieldRequired = ['tingkat', 'nama']
+        let fieldRequired = ['surat_pindah', 'tingkat', 'nama']
         let hasEmptyValue = []
 
         // Extract form
@@ -126,6 +127,7 @@ const OriginSchool = ({ errors, setErrors, form, setForm, newState, loadOriginSc
                         onChange={(e) => handleChange(e, idx)}
                         name="nama"
                         label="Nama Sekolah"
+                        required
                         errors={errors}
                         textFieldIndex={idx}
                         value={item.nama}
@@ -135,19 +137,49 @@ const OriginSchool = ({ errors, setErrors, form, setForm, newState, loadOriginSc
                         onChange={(e) => handleChange(e, idx)}
                         name="surat_pindah"
                         label="Surat Pindah"
+                        required
                         value={item.surat_pindah}
                         errors={errors}
                         textFieldIndex={idx}
-
+                    />
+                    <TextField
+                        onChange={(e) => handleChange(e, idx)}
+                        name="alamat"
+                        label="Alamat"
+                        value={item.alamat}
+                        errors={errors}
+                        textFieldIndex={idx}
                     />
                     <TextField
                         onChange={(e) => handleChange(e, idx)}
                         name="tingkat"
                         label="Tingkat"
+                        required
                         value={item.tingkat}
                         errors={errors}
                         textFieldIndex={idx}
-
+                    />
+                    <DateTimePicker
+                        onChange={(date) => {
+                            cloneForm[idx]['tgl_masuk'] = date;
+                            setForm(cloneForm)
+                        }}
+                        name="tgl_masuk"
+                        label="Tanggal Masuk Sekolah"
+                        value={item.tgl_masuk}
+                        errors={errors}
+                        textFieldIndex={idx}
+                    />
+                    <DateTimePicker
+                        onChange={(date) => {
+                            cloneForm[idx]['tgl_keluar'] = date;
+                            setForm(cloneForm)
+                        }}
+                        name="tgl_keluar"
+                        label="Tanggal Keluar Sekolah"
+                        value={item.tgl_keluar}
+                        errors={errors}
+                        textFieldIndex={idx}
                     />
                 </div>
             ) : <div className="mt-6 text-center text-gray-400">Tidak Ada Data</div>}
