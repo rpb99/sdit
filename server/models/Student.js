@@ -1,69 +1,66 @@
 const { v4: uuidv4 } = require("uuid");
 
 module.exports = (sequelize, DataTypes) => {
-    const Student = sequelize.define(
-        "Student",
-        {
-            id: {
-                type: DataTypes.UUID,
-                autoIncrement: true,
-                primaryKey: true,
-                allowNull: false,
-            },
-            nis: {
-                type: DataTypes.STRING,
-                allowNull: false,
-            },
-            nama: {
-                type: DataTypes.STRING,
-                allowNull: false,
-            },
-            tempat_lahir: {
-                type: DataTypes.STRING,
-                allowNull: false,
-            },
-            tgl_lahir: {
-                type: DataTypes.DATE,
-                allowNull: false,
-            },
-            jenis_kelamin: {
-                type: DataTypes.ENUM,
-                values: ['P', 'L'],
-                allowNull: false,
-            },
-            telepon: {
-                type: DataTypes.STRING,
-                allowNull: false,
-            },
-            alamat: {
-                type: DataTypes.TEXT,
-                allowNull: false,
-            },
-            foto: DataTypes.TEXT,
-            createdAt: {
-                field: "created_at",
-                type: DataTypes.DATE,
-                allowNull: false,
-            },
-            updatedAt: {
-                field: "updated_at",
-                type: DataTypes.DATE,
-                allowNull: false,
-            },
-        },
-        {
-            tableName: "siswa",
-            timestamps: true,
-        }
-    );
-
-    Student.beforeCreate((item) => (item.id = uuidv4()));
-
-
-    Student.associate = models => {
-        Student.hasMany(models.SekolahAsal, { foreignKey: "id_siswa" })
+  const Student = sequelize.define(
+    "Student",
+    {
+      id: {
+        type: DataTypes.UUID,
+        primaryKey: true,
+        allowNull: false,
+      },
+      nis: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      nama: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      tempat_lahir: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      tgl_lahir: {
+        type: DataTypes.DATE,
+        allowNull: false,
+      },
+      jenis_kelamin: {
+        type: DataTypes.ENUM,
+        values: ["P", "L"],
+        allowNull: false,
+      },
+      telepon: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      alamat: {
+        type: DataTypes.TEXT,
+        allowNull: false,
+      },
+      foto: DataTypes.TEXT,
+      createdAt: {
+        field: "created_at",
+        type: DataTypes.DATE,
+        allowNull: false,
+      },
+      updatedAt: {
+        field: "updated_at",
+        type: DataTypes.DATE,
+        allowNull: false,
+      },
+    },
+    {
+      tableName: "siswa",
+      timestamps: true,
     }
+  );
 
+  Student.beforeCreate((item) => (item.id = uuidv4()));
 
-    return Student;
+  Student.associate = (models) => {
+    Student.hasMany(models.SekolahAsal, { foreignKey: "id_siswa" });
+  };
+
+  return Student;
 };
