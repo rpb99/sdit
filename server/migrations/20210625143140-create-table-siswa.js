@@ -4,8 +4,7 @@ module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.createTable("siswa", {
       id: {
-        type: Sequelize.INTEGER,
-        autoIncrement: true,
+        type: Sequelize.UUID,
         primaryKey: true,
         allowNull: false,
       },
@@ -30,6 +29,7 @@ module.exports = {
         values: ["P", "L"],
         allowNull: false,
       },
+      tingkat: Sequelize.STRING(12),
       telepon: {
         type: Sequelize.STRING(15),
         allowNull: false,
@@ -49,11 +49,11 @@ module.exports = {
       },
     });
 
-    await queryInterface.addConstraint("siswa", {
-      type: "unique",
-      name: "UNIQUE_USER_EMAIL",
-      fields: ["nis"],
-    });
+    // await queryInterface.addConstraint("siswa", {
+    //   type: "unique",
+    //   name: "UNIQUE_USER_EMAIL",
+    //   fields: ["nis"],
+    // });
   },
 
   down: async (queryInterface, Sequelize) => {

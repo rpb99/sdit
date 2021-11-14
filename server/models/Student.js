@@ -1,9 +1,11 @@
+const { v4: uuidv4 } = require("uuid");
+
 module.exports = (sequelize, DataTypes) => {
     const Student = sequelize.define(
         "Student",
         {
             id: {
-                type: DataTypes.INTEGER,
+                type: DataTypes.UUID,
                 autoIncrement: true,
                 primaryKey: true,
                 allowNull: false,
@@ -54,6 +56,9 @@ module.exports = (sequelize, DataTypes) => {
             timestamps: true,
         }
     );
+
+    Student.beforeCreate((item) => (item.id = uuidv4()));
+
 
     Student.associate = models => {
         Student.hasMany(models.SekolahAsal, { foreignKey: "id_siswa" })

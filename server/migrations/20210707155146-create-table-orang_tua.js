@@ -4,18 +4,16 @@ module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.createTable("orang_tua", {
       id: {
-        type: Sequelize.INTEGER,
-        autoIncrement: true,
+        type: Sequelize.UUID,
         primaryKey: true,
         allowNull: false,
       },
       id_siswa: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.UUID,
         allowNull: false,
         references: {
           model: "siswa",
-          key: "id"
-
+          key: "id",
         },
       },
       nama_ayah: {
@@ -23,7 +21,7 @@ module.exports = {
         allowNull: false,
       },
       pekerjaan_ayah: Sequelize.STRING(100),
-      penghasilan_ayah: Sequelize.DECIMAL,
+      penghasilan_ayah: Sequelize.DOUBLE,
       pendidikan_ayah: Sequelize.STRING(5),
       tempat_lahir_ayah: Sequelize.STRING(100),
       tgl_lahir_ayah: Sequelize.DATE,
@@ -32,7 +30,7 @@ module.exports = {
         allowNull: false,
       },
       pekerjaan_ibu: Sequelize.STRING(100),
-      penghasilan_ibu: Sequelize.DECIMAL,
+      penghasilan_ibu: Sequelize.DOUBLE,
       pendidikan_ibu: Sequelize.STRING(5),
       tempat_lahir_ibu: Sequelize.STRING(100),
       tgl_lahir_ibu: Sequelize.DATE,

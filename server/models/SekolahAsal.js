@@ -21,9 +21,9 @@ module.exports = (sequelize, DataTypes) => {
                 allowNull: false,
             },
             alamat: DataTypes.TEXT,
-            tgl_masuk: DataTypes.DATE,
+            // tgl_masuk: DataTypes.DATE,
             tgl_keluar: DataTypes.DATE,
-            tingkat: DataTypes.STRING(12),
+            // tingkat: DataTypes.STRING(12),
             survei: DataTypes.STRING(100),
             createdAt: {
                 field: "created_at",

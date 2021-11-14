@@ -1,5 +1,6 @@
 const argon2 = require("argon2");
 const jwt = require("jsonwebtoken");
+const { v4: uuidv4 } = require("uuid");
 const { JWT_EXPIRE_IN, JWT_SECRET } = process.env;
 
 module.exports = (sequelize, DataTypes) => {
@@ -7,11 +8,12 @@ module.exports = (sequelize, DataTypes) => {
     "User",
     {
       id: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.UUID,
         autoIncrement: true,
         primaryKey: true,
         allowNull: false,
       },
+      id_siswa: DataTypes.UUID,
       first_name: {
         type: DataTypes.STRING,
         allowNull: false,
@@ -51,6 +53,8 @@ module.exports = (sequelize, DataTypes) => {
   );
 
   const encryptPassword = async (user) => {
+    user.id = uuidv4();
+
     if (user.changed("password")) {
       user.password = await argon2.hash(user.password);
     }
@@ -67,6 +71,10 @@ module.exports = (sequelize, DataTypes) => {
 
   User.prototype.isMatch = async function (enteredPassword) {
     return await argon2.verify(this.password, enteredPassword);
+  };
+
+  User.associate = (models) => {
+    User.belongsTo(models.RefreshToken, { foreignKey: "user_id" });
   };
 
   return User;
